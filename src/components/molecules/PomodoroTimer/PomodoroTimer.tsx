@@ -52,7 +52,7 @@ const PomodoroTimer = () => {
 
   return (
     <Card
-      className="max-w-[450px] w-full mx-auto py-5"
+      className="max-w-[450px] md:min-h-[320px] w-full py-5"
       style={{ backgroundColor: "hsl(240deg 10% 3.9% / 70%)" }}
     >
       <CardContent>
