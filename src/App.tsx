@@ -1,7 +1,9 @@
+import MainPage from "./components/pages/MainPage";
+
 function App() {
   return (
     <>
-      <h1>Init</h1>
+      <MainPage />
     </>
   );
 }
