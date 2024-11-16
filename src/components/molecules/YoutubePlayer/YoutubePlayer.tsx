@@ -22,7 +22,7 @@ const YoutubePlayer = () => {
     <Card className="max-w-[450px] min-h-[320px] w-full">
       <CardContent>
         <div className="h-full mt-6">
-          <ReactPlayer url={videoUrl} width={"100%"} height={"210px"} />
+          <ReactPlayer url={videoUrl} width={"100%"} height={"210px"} controls={true} />
         </div>
       </CardContent>
       <CardFooter>
