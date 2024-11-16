@@ -57,7 +57,7 @@ const PomodoroTimer = () => {
     >
       <CardContent>
         <h2 className="text-center text-3xl">{clockObject.status}</h2>
-        <h1 className="text-center text-9xl font-bold">
+        <h1 className="text-center md:text-9xl text-7xl font-bold">
           {formatTime(clockObject.time)}
         </h1>
         <TimerRadioGroup
