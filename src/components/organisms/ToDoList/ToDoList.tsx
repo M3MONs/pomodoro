@@ -2,7 +2,7 @@ import DraggableTask from "@/components/molecules/DraggableTask/DraggableTask";
 import DroppableContainer from "@/components/molecules/DroppableContainer/DroppableContainer";
 import ListColumn from "@/components/molecules/ListColumn/ListColumn";
 import { Card, CardContent } from "@/components/ui/card";
-import { deleteTask, handleDragEnd, initialItems, initialItemsProps } from "@/components/utils/listUtils";
+import { addTask, deleteTask, handleDragEnd, initialItems, initialItemsProps } from "@/components/utils/listUtils";
 import { closestCenter, DndContext, MouseSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { useState } from "react";
 
@@ -15,6 +15,10 @@ const ToDoList = () => {
 
   const handleTaskDelete = (id: string, container: string) => {
     deleteTask(id, container, setContainers);
+  };
+
+  const handleAddTask = (container: string) => {
+    addTask(container, setContainers);
   };
 
   const sensors = useSensors(
@@ -36,7 +40,7 @@ const ToDoList = () => {
         <DndContext collisionDetection={closestCenter} onDragEnd={handleDndDragEnd} sensors={sensors}>
           {Object.keys(containers).map((container) => (
             // List Column
-            <ListColumn title={containers[container].title} key={container}>
+            <ListColumn title={containers[container].title} key={container} handleAddTask={() => handleAddTask(container)}>
               {/* Droppable Container */}
               <DroppableContainer key={container} id={container} items={containers[container].items}>
                 {/* Draggable Tasks */}

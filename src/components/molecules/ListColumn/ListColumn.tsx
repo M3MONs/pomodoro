@@ -1,13 +1,14 @@
-import { Card, CardTitle, CardContent } from "@/components/ui/card";
-import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@/components/ui/context-menu";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import React from "react";
 
 interface ListColumnProps {
   title: string;
   children?: React.ReactNode;
+  handleAddTask?: () => void;
 }
 
-const ListColumn: React.FC<ListColumnProps> = ({ title, children }) => {
+const ListColumn: React.FC<ListColumnProps> = ({ title, children, handleAddTask }) => {
   return (
     <Card className="min-h-[400px]">
       <CardTitle className="text-center text-3xl font-bold my-3">{title}</CardTitle>
@@ -16,7 +17,7 @@ const ListColumn: React.FC<ListColumnProps> = ({ title, children }) => {
           <CardContent className="h-full">{children}</CardContent>
         </ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem>Add</ContextMenuItem>
+          <ContextMenuItem onClick={handleAddTask}>Add</ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
     </Card>
