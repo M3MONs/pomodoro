@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 export interface initialItemsProps {
   [key: string]: { title: string; items: itemsProps[] };
 }
@@ -86,6 +87,21 @@ export const deleteTask = (id: string, container: string, setContainers: React.D
       sourceItems.splice(itemIndex, 1);
     }
     // Update the state with the new items
+    return {
+      ...prev,
+      [container]: {
+        ...prev[container],
+        items: sourceItems,
+      },
+    };
+  });
+};
+
+export const addTask = (container: string, setContainers: React.Dispatch<React.SetStateAction<initialItemsProps>>) => {
+  setContainers((prev) => {
+    const sourceItems = Array.from(prev[container].items);
+    const newId = uuidv4();
+    sourceItems.push({ id: newId, value: `New Task` });
     return {
       ...prev,
       [container]: {
