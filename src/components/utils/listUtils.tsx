@@ -11,24 +11,15 @@ export interface itemsProps {
 export const initialItems = {
   toDoContainer: {
     title: "To Do",
-    items: [
-      { id: "1", value: "Item 1" },
-      { id: "2", value: "Item 2" },
-    ],
+    items: [],
   },
   inProgressContainer: {
     title: "In Progress",
-    items: [
-      { id: "3", value: "Item 3" },
-      { id: "4", value: "Item 4" },
-    ],
+    items: [],
   },
   doneContainer: {
     title: "Done",
-    items: [
-      { id: "5", value: "Item 5" },
-      { id: "6", value: "Item 6" },
-    ],
+    items: [],
   },
 };
 
@@ -102,6 +93,23 @@ export const addTask = (container: string, setContainers: React.Dispatch<React.S
     const sourceItems = Array.from(prev[container].items);
     const newId = uuidv4();
     sourceItems.push({ id: newId, value: `New Task` });
+    return {
+      ...prev,
+      [container]: {
+        ...prev[container],
+        items: sourceItems,
+      },
+    };
+  });
+};
+
+export const updateTask = (value: string, id: string, container: string, setContainers: React.Dispatch<React.SetStateAction<initialItemsProps>>) => {
+  setContainers((prev) => {
+    const sourceItems = Array.from(prev[container].items);
+    const itemIndex = sourceItems.findIndex((item) => item.id === id);
+    if (itemIndex > -1) {
+      sourceItems[itemIndex].value = value;
+    }
     return {
       ...prev,
       [container]: {
