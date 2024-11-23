@@ -1,43 +1,66 @@
+export interface initialItemsProps {
+  [key: string]: { title: string; items: itemsProps[] };
+}
+
+export interface itemsProps {
+  id: string;
+  value: string;
+}
+
 export const initialItems = {
   toDoContainer: {
     title: "To Do",
-    items: ["Item 1", "Item 2", "Item 3", "Item 8", "Item 9"],
+    items: [
+      { id: "1", value: "Item 1" },
+      { id: "2", value: "Item 2" },
+    ],
   },
   inProgressContainer: {
     title: "In Progress",
-    items: ["Item 4", "Item 5"],
+    items: [
+      { id: "3", value: "Item 3" },
+      { id: "4", value: "Item 4" },
+    ],
   },
   doneContainer: {
     title: "Done",
-    items: ["Item 6", "Item 7"],
+    items: [
+      { id: "5", value: "Item 5" },
+      { id: "6", value: "Item 6" },
+    ],
   },
 };
 
 export function handleDragEnd(
   event: any,
-  containers: { [key: string]: { title: string; items: string[] } },
-  setContainers: React.Dispatch<React.SetStateAction<{ [key: string]: { title: string; items: string[] } }>>
+  containers: { [key: string]: { title: string; items: { id: string; value: string }[] } },
+  setContainers: React.Dispatch<React.SetStateAction<{ [key: string]: { title: string; items: { id: string; value: string }[] } }>>
 ) {
   const { active, over } = event;
 
+  // If there is no active item or the active item is the same as the item being dragged over, return
   if (!over || active.id === over.id) {
     return;
   }
 
-  const fromContainer = Object.keys(containers).find((key) => containers[key].items.includes(active.id));
+  // Find the container that the active item is in
+  const fromContainer = Object.keys(containers).find((key) => containers[key].items.some((item) => item.id === active.id));
   const toContainer = Object.keys(containers).includes(over.id) ? over.id : null;
 
+  // If the active item is in a container and the container it is being dragged over is different
   if (fromContainer && toContainer && fromContainer !== toContainer) {
     setContainers((prev) => {
       const sourceItems = Array.from(prev[fromContainer].items);
       const targetItems = Array.from(prev[toContainer].items);
 
-      const itemIndex = sourceItems.indexOf(active.id);
+      // Find the index of the active item in the source container
+      const itemIndex = sourceItems.findIndex((item) => item.id === active.id);
       if (itemIndex > -1) {
-        sourceItems.splice(itemIndex, 1);
-        targetItems.push(active.id);
+        const [movedItem] = sourceItems.splice(itemIndex, 1);
+        targetItems.push(movedItem);
       }
 
+      // Update the state with the new items
       return {
         ...prev,
         [fromContainer]: {
@@ -52,3 +75,33 @@ export function handleDragEnd(
     });
   }
 }
+
+export const deleteTask = (id: string, container: string, setContainers: React.Dispatch<React.SetStateAction<initialItemsProps>>) => {
+  setContainers((prev) => {
+    // Find the index of the item in the container
+    const sourceItems = Array.from(prev[container].items);
+    const itemIndex = sourceItems.findIndex((item) => item.id === id);
+    // If the item is found, remove it from the container
+    if (itemIndex > -1) {
+      sourceItems.splice(itemIndex, 1);
+    }
+    // Update the state with the new items
+    return {
+      ...prev,
+      [container]: {
+        ...prev[container],
+        items: sourceItems,
+      },
+    };
+  });
+};
+
+export const draggableTaskStyle = (transform: { x: number; y: number } | null, isDragging: boolean) => ({
+  transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+  opacity: isDragging ? 0.5 : 1,
+  padding: "8px",
+  border: "1px solid #ccc",
+  marginBottom: "4px",
+  backgroundColor: "#fff",
+  touchAction: "none",
+});
