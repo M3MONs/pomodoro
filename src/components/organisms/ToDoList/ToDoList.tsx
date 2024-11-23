@@ -41,7 +41,7 @@ const ToDoList = () => {
               <DroppableContainer key={container} id={container} items={containers[container].items}>
                 {/* Draggable Tasks */}
                 {containers[container].items.map((item) => (
-                  <DraggableTask key={item.id} id={item.id} value={item.value} handleDelete={(id) => handleTaskDelete(id, container)} />
+                  <DraggableTask key={item.id} item={item} handleDelete={(id) => handleTaskDelete(id, container)} />
                 ))}
               </DroppableContainer>
             </ListColumn>

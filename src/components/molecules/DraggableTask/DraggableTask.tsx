@@ -4,12 +4,15 @@ import { useDraggable } from "@dnd-kit/core";
 import React from "react";
 
 interface DraggableTaskProps {
-  id: string;
-  value: string;
+  item: {
+    id: string;
+    value: string;
+  };
   handleDelete?: (id: string) => void;
 }
 
-const DraggableTask: React.FC<DraggableTaskProps> = ({ id, value, handleDelete }) => {
+const DraggableTask: React.FC<DraggableTaskProps> = ({ item, handleDelete }) => {
+  const { id, value } = item;
   const [isHovered, setIsHovered] = React.useState(false);
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id,
